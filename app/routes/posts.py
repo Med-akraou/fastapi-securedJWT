@@ -3,11 +3,13 @@ from sqlalchemy.orm import Session
 from ..services import post_service
 from ..db.database import get_db
 from ..schemas.post import * 
-
+from typing import Annotated
+from ..schemas.token import TokenData
+from ..core.auth import has_role
 router = APIRouter()
 
 @router.get('/posts')
-def get_all_posts_endpoint(db: Session = Depends(get_db)):
+def get_all_posts_endpoint(current_user: Annotated[TokenData, Depends(has_role("admin","student"))],db: Session = Depends(get_db)):
     return post_service.fetch_all_posts(db)
 
 @router.get("/posts/{id}", response_model=Post)
