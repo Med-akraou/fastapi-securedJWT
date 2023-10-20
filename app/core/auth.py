@@ -8,7 +8,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from ..schemas import user
-from ..schemas.token import TokenData
+from ..schemas.token import CurrentUser
 from ..models.user import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -55,10 +55,11 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         roles = payload.get("roles")
+        id = payload.get("id")
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username,roles=roles)
-        return token_data
+        current_user = CurrentUser(username=username,roles=roles,id=id)
+        return current_user
     except JWTError:
         raise credentials_exception
     

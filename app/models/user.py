@@ -1,6 +1,7 @@
 from ..db.database import Base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from sqlalchemy import Column,Integer,String,Boolean,Table, ForeignKey
+from typing import List
 
 user_roles = Table(
     'user_roles', Base.metadata,
@@ -11,18 +12,23 @@ user_roles = Table(
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    firstname = Column(String, index=True)
-    lastname = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    password = Column(String)
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    firstname: Mapped[str] = Column(String, index=True)
+    lastname: Mapped[str] = Column(String, index=True)
+    email: Mapped[str] = Column(String, unique=True, index=True)
+    password: Mapped[str] = Column(String)
     
-    roles = relationship("Role", secondary=user_roles, back_populates="users")
+    # Relationship with Post model
+    posts: Mapped[List["Post"]] = relationship("Post", back_populates="user")
+    
+    # many to many Relationship with Role
+    roles: Mapped[List["Role"]] = relationship("Role", secondary=user_roles, back_populates="users")
 
 class Role(Base):
     __tablename__ = "roles"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
+    id: Mapped[int] = Column(Integer, primary_key=True, index=True)
+    name: Mapped[str] = Column(String, unique=True)
     
-    users = relationship("User", secondary=user_roles, back_populates="roles")
+    # many to many relationship with User
+    users: Mapped[List["User"]] = relationship("User", secondary=user_roles, back_populates="roles")
