@@ -14,9 +14,11 @@ router = APIRouter()
 @router.get('/posts')
 def get_all_posts(
     current_user: Annotated[CurrentUser, Depends(has_role("admin"))],
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 10,
     ):
-    return post_service.fetch_all_posts(db)
+    return post_service.fetch_all_posts(db,skip,limit)
 
 
 @router.get("/posts/{id}", response_model=Post)

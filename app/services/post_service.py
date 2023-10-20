@@ -6,8 +6,8 @@ from ..schemas import post
 from ..schemas.token import CurrentUser
 
 
-def fetch_all_posts(db: Session):
-    return post_crud.get_all_posts(db)
+def fetch_all_posts(db: Session, skip: int, limit: int ):
+    return post_crud.get_all_posts(db, skip, limit)
 
 
 def fetch_post_by_id(db: Session, current_user: CurrentUser , id: int):
