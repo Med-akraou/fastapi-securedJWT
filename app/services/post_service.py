@@ -44,3 +44,11 @@ def remove_post(db: Session, current_user: CurrentUser , id: int):
     db_post = fetch_post_by_id(db,id)
     post_crud.delete_post(db, db_post)
     return {"status": "success", "message": "Post deleted successfully"}
+
+
+def fetch_posts_of_user(db: Session, current_user:CurrentUser ,id: int, skip: int, limit: int):
+    if current_user.id != id and "admin" not in current_user.roles:
+        raise HTTPException(status_code=403, detail="Unauthorized: You don't have access")
+        
+    return post_crud.get_posts_of_user(db, id, skip=skip, limit=limit)
+

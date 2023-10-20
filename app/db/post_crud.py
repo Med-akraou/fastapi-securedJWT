@@ -5,7 +5,7 @@ from ..models.post import Post
 
 
 def get_all_posts(db: Session , skip: int, limit: int):
-    return db.query(Post).offset(skip).limit(limit).all()
+    return db.query(Post).offset(skip).limit().all()
 
 def get_post(db: Session, id: int):
     return db.query(Post).filter(Post.id == id).first()
@@ -27,4 +27,7 @@ def delete_post(db: Session, db_post):
     db.delete(db_post)
     db.commit()
 
+
+def get_posts_of_user(db: Session, id: int, skip: int, limit: int):
+    return db.query(Post).filter(Post.user_id == id).offset(skip).limit(limit).all()
 
