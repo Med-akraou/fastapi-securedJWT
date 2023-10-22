@@ -32,3 +32,10 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
+# add role to user given user username and role name json
+@router.post("/users/role", response_model=User)
+def add_role_to_user(user_role: UserRole, db: Session = Depends(get_db)):
+    return user_service.add_role_to_user(db, user_role.username, user_role.role_name)
+
+
+

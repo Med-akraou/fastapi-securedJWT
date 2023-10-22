@@ -31,3 +31,8 @@ class Role(RoleBase):
 
     class Config:
         orm_mode = True
+
+class UserRole(BaseModel):
+    username: str
+    role: str
+
