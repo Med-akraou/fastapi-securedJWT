@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from ..services import user_service
 from ..db.database import get_db
@@ -6,12 +6,16 @@ from ..schemas.user import *
 from ..schemas.token import *
 from ..core.auth import authenticate_user, create_access_token
 from datetime import datetime, timedelta
+from fastapi.responses import JSONResponse
+
 
 router = APIRouter()
 
-@router.post("/users/", response_model=User)
+@router.post("/users/", status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    return user_service.create_user_service(db, user)
+    user_service.create_user_service(db, user)
+
+    
 
 
 @router.post("/token", response_model=Token)
@@ -33,9 +37,9 @@ async def login_for_access_token(
 
 
 # add role to user given user username and role name json
-@router.post("/users/role", response_model=User)
+@router.post("/users/role", status_code=status.HTTP_201_CREATED)
 def add_role_to_user(user_role: UserRole, db: Session = Depends(get_db)):
-    return user_service.add_role_to_user(db, user_role.username, user_role.role_name)
+    user_service.add_role_to_user(db, user_role.username, user_role.role)
 
 
 

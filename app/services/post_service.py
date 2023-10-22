@@ -11,7 +11,7 @@ def fetch_all_posts(db: Session, skip: int, limit: int ):
 
 
 def fetch_post_by_id(db: Session, current_user: CurrentUser , id: int):
-    post = post_crud.get_post(db, post_id)
+    post = post_crud.get_post(db, id)
     if post is None:
         raise HTTPException(status_code=404, detail="Post not found")
 
@@ -30,7 +30,7 @@ def create_post(db: Session,current_user: CurrentUser , post_data: post.PostCrea
 
 
 def update_post(db: Session, current_user: CurrentUser , id: int, post_data: post.PostUpdate):
-    db_post = fetch_post_by_id(db,id)
+    db_post = fetch_post_by_id(db,current_user,id)
     # Convert the post data to a dictionary and filter out None values
     update_data = {k: v for k, v in post_data.dict().items() if v is not None}
     for key, value in update_data.items():
@@ -41,7 +41,7 @@ def update_post(db: Session, current_user: CurrentUser , id: int, post_data: pos
     
 
 def remove_post(db: Session, current_user: CurrentUser , id: int):
-    db_post = fetch_post_by_id(db,id)
+    db_post = fetch_post_by_id(db,current_user,id)
     post_crud.delete_post(db, db_post)
     return {"status": "success", "message": "Post deleted successfully"}
 

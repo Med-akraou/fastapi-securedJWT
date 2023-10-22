@@ -5,7 +5,7 @@ from ..models.post import Post
 
 
 def get_all_posts(db: Session , skip: int, limit: int):
-    return db.query(Post).offset(skip).limit().all()
+    return db.query(Post).offset(skip).limit(limit).all()
 
 def get_post(db: Session, id: int):
     return db.query(Post).filter(Post.id == id).first()
