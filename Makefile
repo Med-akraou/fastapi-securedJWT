@@ -11,7 +11,7 @@ format:
 	black . 
 lint:
 	#flake8 or #pylint
-	pylint --disable=R,C *.py mylib/*.py
+	pylint --disable=R,C */*.py
 test:
 	#test
 	python -m pytest -vv --cov=mylib --cov=main test_*.py
