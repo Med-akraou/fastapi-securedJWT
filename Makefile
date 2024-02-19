@@ -12,9 +12,10 @@ format:
 lint:
 	#flake8 or #pylint
 	pylint --disable=R,C */*.py
+.PHONY: test
 test:
 	#test
-	python -m pytest -vv --cov=mylib --cov=main test_*.py
+	python -m pytest -vv --cov=app test/mytest.py
 build:
 	#build container
 	docker build -t deploy-fastapi .
