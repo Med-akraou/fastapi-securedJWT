@@ -1,13 +1,12 @@
 from sqlalchemy.orm import Session
-from ..models.user import User, Role 
+from ..models.user import User, Role
 from ..schemas.user import UserCreate
 
 
-def create_user(db: Session, user: UserCreate): 
+def create_user(db: Session, user: UserCreate):
     db.add(user)
     db.commit()
     db.refresh(user)
-    
 
 
 def get_user_by_username(db: Session, username: str):

@@ -1,14 +1,15 @@
-
 from sqlalchemy.orm import Session
 from ..schemas import post
-from ..models.post import Post 
+from ..models.post import Post
 
 
-def get_all_posts(db: Session , skip: int, limit: int):
+def get_all_posts(db: Session, skip: int, limit: int):
     return db.query(Post).offset(skip).limit(limit).all()
+
 
 def get_post(db: Session, id: int):
     return db.query(Post).filter(Post.id == id).first()
+
 
 def save_post(db: Session, post_data: post.PostCreate):
     db.add(post_data)
@@ -30,4 +31,3 @@ def delete_post(db: Session, db_post):
 
 def get_posts_of_user(db: Session, id: int, skip: int, limit: int):
     return db.query(Post).filter(Post.user_id == id).offset(skip).limit(limit).all()
-
