@@ -9,7 +9,9 @@ from sqlalchemy.orm import relationship, Mapped
 
 class Post(Base):
     __tablename__ = "posts"
+    
     id: Mapped[int] = Column(Integer, primary_key=True)
+
     title: Mapped[str] = Column(String, nullable=False)
     content: Mapped[str] = Column(String, nullable=False)
     published: Mapped[bool] = Column(Boolean, default=True)
